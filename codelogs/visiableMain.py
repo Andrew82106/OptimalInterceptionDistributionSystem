@@ -21,7 +21,13 @@ app = Flask(__name__, static_folder="templates")
 
 @app.route("/")
 def index():
-    c = addFeaturesToMap.GenerateTheMap()
+    c = addFeaturesToMap.GenerateTheMap([3])
+    return markupsafe.Markup(c.render_embed())
+
+
+@app.route("/routeS")
+def K():
+    c = addFeaturesToMap.GenerateTheMap([1, 2])
     return markupsafe.Markup(c.render_embed())
 
 

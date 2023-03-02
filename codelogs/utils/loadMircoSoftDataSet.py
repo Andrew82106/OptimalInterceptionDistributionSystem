@@ -89,7 +89,7 @@ def MiniDataset(RouteListIn=-1, Save=False):
     return NewRouteList
 
 
-def OneRoute(RouteListIn=MiniDataset(), RouteLength=7):
+def OneRoute(RouteListIn=MiniDataset(), RouteLength=10):
     """
 
     从小数据集中找一条路径，路径点数为7
@@ -98,21 +98,23 @@ def OneRoute(RouteListIn=MiniDataset(), RouteLength=7):
     :param RouteLength: 路径长度，默认为7
     :return: 返回一条路径
     """
-    ID = random.randint(2, len(RouteListIn))
-    cnt = 0
-    Route = -1
-    for i in RouteListIn:
-        cnt += 1
-        if cnt == ID:
-            Route = RouteListIn[i]
-    if Route == -1:
-        raise Exception(f"没找到ID为{ID}的这条路径")
-    left = random.randint(0, len(Route)-RouteLength)
-    y = Route[left: left+RouteLength]
-    for i in range(len(y)):
-        y[i][0] = float(y[i][0])
-        y[i][1] = float(y[i][1])
-    return [y]
+    while 1:
+        ID = random.randint(2, len(RouteListIn))
+        cnt = 0
+        Route = -1
+        for i in RouteListIn:
+            cnt += 1
+            if cnt == ID:
+                Route = RouteListIn[i]
+        if Route == -1:
+            raise Exception(f"没找到ID为{ID}的这条路径")
+        left = random.randint(0, len(Route)-RouteLength)
+        y = Route[left: left+RouteLength]
+        for i in range(len(y)):
+            y[i][0] = float(y[i][0])
+            y[i][1] = float(y[i][1])
+        if len(y) >= RouteLength:
+            return [y]
 
 
 def FormatDataset(RoutListIn=-1):
@@ -149,14 +151,14 @@ if __name__ == '__main__':
     # z = loadDataset(upDate=False)
     # x = MiniDataset(Save=True)
     # x = FormatDataset(MiniDataset())
-    """MarkovModel.Train(
+    MarkovModel.Train(
         FormatDataset(
             loadDataset(upDate=True)
             # MiniDataset()
         ),
         conf.RoutePKL
-    )"""
-    z = OneRoute()
+    )
+    # z = OneRoute()
     """
     微软数据集大小：
     10337个轨迹

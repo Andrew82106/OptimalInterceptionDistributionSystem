@@ -14,13 +14,6 @@ import tqdm
 import h3
 
 
-def LoadModel():
-    with open("/Users/andrewlee/Desktop/Projects/mutiAGVallocator/datalogs/release/taxi_log_2008_by_id/Markov.pkl",
-              'rb') as f:
-        loaded_obj = pickle.load(f)
-    return loaded_obj
-
-
 class Markov:
     def __init__(self):
         self.N = 0
@@ -28,6 +21,13 @@ class Markov:
         self.Map_ID_to_Hex = {}
         self.Fr = {}
         self.Route = []
+
+
+def LoadModel() -> Markov:
+    with open("/Users/andrewlee/Desktop/Projects/mutiAGVallocator/datalogs/release/taxi_log_2008_by_id/Markov.pkl",
+              'rb') as f:
+        loaded_obj = pickle.load(f)
+    return loaded_obj
 
 
 def calcPossibility(MarkovModel: Markov, RouteList: list, Aim: int, degree=5):
@@ -51,6 +51,7 @@ def calcPossibility(MarkovModel: Markov, RouteList: list, Aim: int, degree=5):
 
 def Predict(MarkovModel: Markov, RouteList: list, degree=5):
     NearBy = h3.k_ring(MarkovModel.Map_ID_to_Hex[RouteList[-1]])
+    # '870d4bb91ffffff'
     for i in NearBy:
         if i not in MarkovModel.Map_Hex_to_ID:
             print(f"FATAl!! Hex ID:{i}")
@@ -58,12 +59,17 @@ def Predict(MarkovModel: Markov, RouteList: list, degree=5):
     res = {}
     sum_ = 0
     for i in NearBy:
-        res[MarkovModel.Map_Hex_to_ID[i]] = calcPossibility(MarkovModel, RouteList + [MarkovModel.Map_Hex_to_ID[i]], MarkovModel.Map_Hex_to_ID[i], degree)
-        sum_ += res[MarkovModel.Map_Hex_to_ID[i]]
+        # res[MarkovModel.Map_Hex_to_ID[i]] = calcPossibility(MarkovModel, RouteList + [MarkovModel.Map_Hex_to_ID[i]], MarkovModel.Map_Hex_to_ID[i], degree)
+        res[i] = calcPossibility(MarkovModel, RouteList + [MarkovModel.Map_Hex_to_ID[i]],
+                                 MarkovModel.Map_Hex_to_ID[i], degree)
+        sum_ += res[i]
 
     # 浅浅做一个归一化
     for i in res:
-        res[i] = res[i] / sum_
+        if sum == 0:
+            res[i] = 1 / 7
+        else:
+            res[i] = res[i] / sum_
     return res
 
 
@@ -92,7 +98,7 @@ def Train(DataIn, SavePath: str):
     for Route_i in tqdm.tqdm(DataIn, desc="处理路径中"):
         RouteListOfHex.append([])
         for point_i in Route_i:
-            hex_id = h3Related.encode_to_h3(point_i[0], point_i[1])  # 注意检查这里
+            hex_id = h3Related.encode_to_h3(point_i[1], point_i[0])  # 注意检查这里
 
             if hex_id not in res.Map_Hex_to_ID:
                 res.Map_Hex_to_ID[hex_id] = cnt
@@ -109,6 +115,6 @@ def Train(DataIn, SavePath: str):
 
 
 if __name__ == '__main__':
-    x = LoadModel()
-    print(Predict(x, [1]))
+    # x = LoadModel()
+    # print(Predict(x, [1]))
     print("end")
