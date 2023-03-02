@@ -13,6 +13,7 @@ class config:
         self.latRange = (39.636556, 40.224357)
         self.lngRange = (116.016776, 116.858452)
         self.RoutePKL = os.path.join(self.DataLogs, "Markov.pkl")
+        self.POI_PKL = os.path.join(self.DataLogs, "POI.pkl")
 
 
 if __name__ == '__main__':
@@ -20,3 +21,4 @@ if __name__ == '__main__':
     print(x.Root)
     print(x.utils)
     print(x.RoutePKL)
+    print(x.POI_PKL)

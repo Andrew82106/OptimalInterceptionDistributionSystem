@@ -6,6 +6,8 @@ sys.path.append(parent_dir)
 sys.path.append(current_dir)
 sys.path.append(os.path.join(current_dir, "utils"))
 sys.path.append(os.path.join(current_dir, "utils", "basicFun"))
+sys.path.append(os.path.join(current_dir, "utils", "loadPOI_Data"))
+sys.path.append(os.path.join(current_dir, "utils", "algorithm"))
 
 from flask import Flask
 from jinja2 import Environment, FileSystemLoader
@@ -19,7 +21,7 @@ CurrentConfig.GLOBAL_ENV = Environment(loader=FileSystemLoader("./templates"))
 app = Flask(__name__, static_folder="templates")
 
 
-@app.route("/")
+@app.route("/oneroute")
 def index():
     c = addFeaturesToMap.GenerateTheMap([3])
     return markupsafe.Markup(c.render_embed())
@@ -28,6 +30,18 @@ def index():
 @app.route("/routeS")
 def K():
     c = addFeaturesToMap.GenerateTheMap([1, 2])
+    return markupsafe.Markup(c.render_embed())
+
+
+@app.route("/points")
+def KF():
+    c = addFeaturesToMap.GenerateTheMap([4])
+    return markupsafe.Markup(c.render_embed())
+
+
+@app.route("/")
+def KFC():
+    c = addFeaturesToMap.GenerateTheMap([5])
     return markupsafe.Markup(c.render_embed())
 
 

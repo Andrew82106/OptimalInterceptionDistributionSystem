@@ -4,6 +4,8 @@ from pyecharts import options as opts
 from pyecharts.globals import ChartType
 import h3
 from utils.algorithm import MarkovModel
+from utils.loadPOI_Data import loadTrafficPoliceData
+from utils.algorithm import calcDistance
 
 
 def AddHexToMap(MapIn: BMap, polygon=None, color='red', width=1) -> BMap:
@@ -35,16 +37,31 @@ def AddRouteToMap(MapIn: BMap, RouteDataset=loadMircoSoftDataSet.FormatDataset()
     return MapIn
 
 
+def AddPointToMap(MapIn: BMap, PointDictIn: dict):
+    data_pairs = []
+    cnt = 0
+    for POS_i in PointDictIn:
+        data_pairs.append([POS_i['name'], [POS_i['location']['lng'], POS_i['location']['lat'], cnt]])
+        cnt += 1
+    MapIn.add(
+        type_="effectScatter",
+        series_name="警力点",
+        data_pair=data_pairs,
+        symbol_size=10,
+        effect_opts=opts.EffectOpts(),
+        label_opts=opts.LabelOpts(formatter="{a}", position="right", is_show=False),
+        itemstyle_opts=opts.ItemStyleOpts(color="blue"),
+    )
+    return MapIn
+
+
 def GenerateTheMap(type_=None):
     """
     生成地图
 
-    :param type_: 1 in type，生成路径；2 in type，生成Hex Grid；3 in type：生成OneRoute
-    :return:
+    :param type_: 1 in type，生成路径；2 in type，生成Hex Grid；3 in type：生成OneRoute；4 in type：生成警力点；5 in type：生成规划的路径
+    :return: 返回添加好元素的BMap对象
     """
-    # return AddHexToMap(GeneratePyeCharts.GenerateBasicMap())
-    # return AddRouteToMap(GeneratePyeCharts.GenerateBasicMap())
-    # return AddRouteToMap(AddHexToMap(GeneratePyeCharts.GenerateBasicMap()))
     if type_ is None:
         type_ = [1]
     res = GeneratePyeCharts.GenerateBasicMap()
@@ -53,22 +70,29 @@ def GenerateTheMap(type_=None):
     if 2 in type_:
         res = AddHexToMap(res)
     if 3 in type_:
+
         model = MarkovModel.LoadModel()
         DTset = loadMircoSoftDataSet.OneRoute()
         NRouteList = [model.Map_Hex_to_ID[h3.geo_to_h3(i[1], i[0], resolution=7)] for i in DTset[0]]
         predictRES = MarkovModel.Predict(model, NRouteList)
+        # 预测路径走向
+
         sorted_keys = sorted(predictRES, key=predictRES.get, reverse=False)
         res = AddRouteToMap(res, DTset, width=1)
         color = ["#00ff46", "#c0ff00", "#deed00", "#fcda00", "#fcb400", "#fc7c00", "#fc0000"]
-        # ner = h3.k_ring(h3Related.encode_to_h3(DTset[-1][-1][1], DTset[-1][-1][0]))
-        """cnt = 0
-        for i in ner:
-            x = [[i[1], i[0]] for i in h3.h3_to_geo_boundary(i)]
-            res = AddHexToMap(res, polygon=[x+[x[0]]], color=color[cnt], width=5)
-            cnt += 1"""
         cnt = 0
         for i in sorted_keys:
             x = [[i[1], i[0]] for i in h3.h3_to_geo_boundary(i)]
             res = AddHexToMap(res, polygon=[x + [x[0]]], color=color[cnt], width=5)
             cnt += 1
+        # 根据预测的路径走向将周围的几个框画出来
+
+        # 显示附近范围内的Police POI，并且给每个POI随机分配可调动警力
+
+        # 选取前6个可分配警力最多的POI进行分配
+    if 4 in type_:
+        res = AddPointToMap(res, loadTrafficPoliceData.loadPOI_Data())
+
+    if 5 in type_:
+        res = AddRouteToMap(res, calcDistance.getRoute(40.01116, 116.339303, 39.936404, 116.452562))
     return res

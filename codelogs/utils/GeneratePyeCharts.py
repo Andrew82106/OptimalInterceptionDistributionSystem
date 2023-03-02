@@ -22,6 +22,11 @@ def SampleData():
 
 
 def GenerateBasicMap() -> BMap:
+    """
+    造最基础的地图
+
+    :return: 返回一个BMap地图对象
+    """
     ak = "So5nviFUMbkIU4LvDMMooXdwsQkWQQ3Z"
     res = (
         BMap(init_opts=opts.InitOpts(width="1200px", height="800px"))
