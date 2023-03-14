@@ -23,7 +23,7 @@ def AddHexToMap(MapIn: BMap, polygon=None, color='red', width=1) -> BMap:
     return MapIn
 
 
-def AddRouteToMap(MapIn: BMap, RouteDataset=loadMircoSoftDataSet.FormatDataset(), width=1) -> BMap:
+def AddRouteToMap(MapIn: BMap, RouteDataset=loadMircoSoftDataSet.FormatDataset(), width=1, color='blue') -> BMap:
     print(RouteDataset)
     MapIn.add(
         series_name="",
@@ -31,7 +31,7 @@ def AddRouteToMap(MapIn: BMap, RouteDataset=loadMircoSoftDataSet.FormatDataset()
         data_pair=RouteDataset,
         is_polyline=True,
         is_large=True,
-        linestyle_opts=opts.LineStyleOpts(color="blue", opacity=0.2, width=width),
+        linestyle_opts=opts.LineStyleOpts(color=color, opacity=0.2, width=width),
         effect_opts=opts.EffectOpts(trail_length=0.5),
     )
     return MapIn
@@ -87,8 +87,31 @@ def GenerateTheMap(type_=None):
             cnt += 1
         # 根据预测的路径走向将周围的几个框画出来
 
-        # 显示附近范围内的Police POI，并且给每个POI随机分配可调动警力
+        LastPoint = DTset[0][-1]
+        ori = loadTrafficPoliceData.loadPOI_Data()
+        policeForces = []
+        for i in ori:
+            if calcDistance.calcDisBetween(LastPoint[1], LastPoint[0], i['location']['lat'], i['location']['lng']) <= 6:
+                policeForces.append(i)
+        res = AddPointToMap(res, policeForces)
+        # 显示附近3km范围内的Police POI，并且给每个POI随机分配可调动警力
 
+        danger_zones = sorted_keys[-3:]
+        for i in danger_zones:
+            center_of_zone = calcDistance.hex_center(h3.h3_to_geo_boundary(i))
+            minn_dis = -1
+            policeforces = -1
+            for j in policeForces:
+                dis = calcDistance.calcDisBetween(j['location']['lat'], j['location']['lng'], center_of_zone[0], center_of_zone[1])
+                if minn_dis == -1:
+                    minn_dis = dis
+                    policeforces = j
+                if minn_dis > dis:
+                    minn_dis = dis
+                    policeforces = j
+            if policeforces == -1:
+                raise Exception("没选到police force！")
+            res = AddRouteToMap(res, calcDistance.getRoute(policeforces['location']['lat'], policeforces['location']['lng'], center_of_zone[0], center_of_zone[1]), color='red')
         # 选取前6个可分配警力最多的POI进行分配
     if 4 in type_:
         res = AddPointToMap(res, loadTrafficPoliceData.loadPOI_Data())

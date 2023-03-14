@@ -57,5 +57,5 @@ def convertRoute2H3(RouteList):
 if __name__ == '__main__':
     z = Separate()
     print(len(z))
-    print(encode_to_h3(116.016776, 39.636556))
+    print(encode_to_h3(113.016776, 40.636556))
     print("end")
