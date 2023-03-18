@@ -118,4 +118,8 @@ def GenerateTheMap(type_=None):
 
     if 5 in type_:
         res = AddRouteToMap(res, calcDistance.getRoute(40.01116, 116.339303, 39.936404, 116.452562))
+        """res = res.add_schema(
+            center=[(116.339303+116.452562)/2, (40.01116+39.936404)/2],
+            baidu_ak="So5nviFUMbkIU4LvDMMooXdwsQkWQQ3Z"
+        )"""
     return res

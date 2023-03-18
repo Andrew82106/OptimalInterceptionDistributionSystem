@@ -32,7 +32,7 @@ def GenerateBasicMap() -> BMap:
         BMap(init_opts=opts.InitOpts(width="1200px", height="800px"))
         .add_schema(
             baidu_ak=ak,
-            center=[116.404269, 39.911614],
+            center=[116.38, 39.9],
             zoom=13,
             is_roam=True,
             map_style={
