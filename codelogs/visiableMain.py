@@ -23,36 +23,40 @@ CurrentConfig.GLOBAL_ENV = Environment(loader=FileSystemLoader("./templates"))
 
 app = Flask(__name__, static_folder="static", template_folder="templates")
 
-
-@app.route("/oneroute")
+"""@app.route("/oneroute")
 def index():
-    c = addFeaturesToMap.GenerateTheMap([3])
+    c = addFeaturesToMap.GenerateTheMap_Old([3])
     return markupsafe.Markup(c.render_embed())
 
 
 @app.route("/routeS")
 def K():
-    c = addFeaturesToMap.GenerateTheMap([1, 2])
+    c = addFeaturesToMap.GenerateTheMap_Old([1, 2])
     return markupsafe.Markup(c.render_embed())
 
 
 @app.route("/points")
 def KF():
-    c = addFeaturesToMap.GenerateTheMap([4])
+    c = addFeaturesToMap.GenerateTheMap_Old([4])
     return markupsafe.Markup(c.render_embed())
 
 
 @app.route("/jjj")
 def KFC():
-    c = addFeaturesToMap.GenerateTheMap([5])
-    return markupsafe.Markup(c.render_embed())
+    c = addFeaturesToMap.GenerateTheMap_Old([5])
+    return markupsafe.Markup(c.render_embed())"""
 
 
 @app.route('/')
 def index0():
     data = SourceData()
-    c = addFeaturesToMap.GenerateTheMap([5])
-    return render_template('index.html', form=data, title=data.title, MainMap=c.render_embed())
+    c = addFeaturesToMap.GenerateTheMap()
+    return render_template(
+        'index.html',
+        form=data,
+        title=data.title,
+        MainMap=c.render_embed()
+    )
 
 
 if __name__ == "__main__":

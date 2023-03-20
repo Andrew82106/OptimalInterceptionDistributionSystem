@@ -21,18 +21,20 @@ def SampleData():
     return map_data
 
 
-def GenerateBasicMap() -> BMap:
+def GenerateBasicMap(center=None) -> BMap:
     """
     造最基础的地图
 
     :return: 返回一个BMap地图对象
     """
+    if center is None:
+        center = [116.38, 39.9]
     ak = "So5nviFUMbkIU4LvDMMooXdwsQkWQQ3Z"
     res = (
         BMap(init_opts=opts.InitOpts(width="1200px", height="800px"))
         .add_schema(
             baidu_ak=ak,
-            center=[116.38, 39.9],
+            center=center,
             zoom=13,
             is_roam=True,
             map_style={

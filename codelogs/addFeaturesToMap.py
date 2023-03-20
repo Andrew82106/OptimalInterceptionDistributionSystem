@@ -55,7 +55,7 @@ def AddPointToMap(MapIn: BMap, PointDictIn: dict):
     return MapIn
 
 
-def GenerateTheMap(type_=None):
+def GenerateTheMap_Old(type_=None):
     """
     生成地图
 
@@ -102,7 +102,8 @@ def GenerateTheMap(type_=None):
             minn_dis = -1
             policeforces = -1
             for j in policeForces:
-                dis = calcDistance.calcDisBetween(j['location']['lat'], j['location']['lng'], center_of_zone[0], center_of_zone[1])
+                dis = calcDistance.calcDisBetween(j['location']['lat'], j['location']['lng'], center_of_zone[0],
+                                                  center_of_zone[1])
                 if minn_dis == -1:
                     minn_dis = dis
                     policeforces = j
@@ -111,7 +112,9 @@ def GenerateTheMap(type_=None):
                     policeforces = j
             if policeforces == -1:
                 raise Exception("没选到police force！")
-            res = AddRouteToMap(res, calcDistance.getRoute(policeforces['location']['lat'], policeforces['location']['lng'], center_of_zone[0], center_of_zone[1]), color='red')
+            res = AddRouteToMap(res,
+                                calcDistance.getRoute(policeforces['location']['lat'], policeforces['location']['lng'],
+                                                      center_of_zone[0], center_of_zone[1]), color='red')
         # 选取前6个可分配警力最多的POI进行分配
     if 4 in type_:
         res = AddPointToMap(res, loadTrafficPoliceData.loadPOI_Data())
@@ -122,4 +125,64 @@ def GenerateTheMap(type_=None):
             center=[(116.339303+116.452562)/2, (40.01116+39.936404)/2],
             baidu_ak="So5nviFUMbkIU4LvDMMooXdwsQkWQQ3Z"
         )"""
+    return res
+
+
+def GenerateTheMap():
+    """
+    生成地图
+
+    :param type_: 1 in type，生成路径；2 in type，生成Hex Grid；3 in type：生成OneRoute；4 in type：生成警力点；5 in type：生成规划的路径
+    :return: 返回添加好元素的BMap对象
+    """
+    model = MarkovModel.LoadModel()
+    DTset = loadMircoSoftDataSet.OneRoute()
+    NRouteList = [model.Map_Hex_to_ID[h3.geo_to_h3(i[1], i[0], resolution=7)] for i in DTset[0]]
+    predictRES = MarkovModel.Predict(model, NRouteList)
+    # 预测路径走向
+    sorted_keys = sorted(predictRES, key=predictRES.get, reverse=False)
+    # xx = calcDistance.hex_center(h3.h3_to_geo_boundary(sorted_keys[1]))
+    res = GeneratePyeCharts.GenerateBasicMap(
+        center=[DTset[0][-1][0]-0.05, DTset[0][-1][1]+0.05]
+    )
+
+    res = AddRouteToMap(res, DTset, width=1)
+    color = ["#00ff46", "#c0ff00", "#deed00", "#fcda00", "#fcb400", "#fc7c00", "#fc0000"]
+    cnt = 0
+    for i in sorted_keys:
+        x = [[i[1], i[0]] for i in h3.h3_to_geo_boundary(i)]
+        res = AddHexToMap(res, polygon=[x + [x[0]]], color=color[cnt], width=5)
+        cnt += 1
+    # 根据预测的路径走向将周围的几个框画出来
+
+    LastPoint = DTset[0][-1]
+    ori = loadTrafficPoliceData.loadPOI_Data()
+    policeForces = []
+    for i in ori:
+        if calcDistance.calcDisBetween(LastPoint[1], LastPoint[0], i['location']['lat'], i['location']['lng']) <= 6:
+            policeForces.append(i)
+    res = AddPointToMap(res, policeForces)
+    # 显示附近3km范围内的Police POI，并且给每个POI随机分配可调动警力
+
+    danger_zones = sorted_keys[-3:]
+    for i in danger_zones:
+        center_of_zone = calcDistance.hex_center(h3.h3_to_geo_boundary(i))
+        minn_dis = -1
+        policeforces = -1
+        for j in policeForces:
+            dis = calcDistance.calcDisBetween(j['location']['lat'], j['location']['lng'], center_of_zone[0],
+                                              center_of_zone[1])
+            if minn_dis == -1:
+                minn_dis = dis
+                policeforces = j
+            if minn_dis > dis:
+                minn_dis = dis
+                policeforces = j
+        if policeforces == -1:
+            raise Exception("没选到police force！")
+        res = AddRouteToMap(res, calcDistance.getRoute(policeforces['location']['lat'], policeforces['location']['lng'],
+                                                       center_of_zone[0], center_of_zone[1]), color='red')
+    # 选取前6个可分配警力最多的POI进行分配
+
+
     return res

@@ -66,7 +66,7 @@ def Predict(MarkovModel: Markov, RouteList: list, degree=5):
 
     # 浅浅做一个归一化
     for i in res:
-        if sum == 0:
+        if sum_ == 0:
             res[i] = 1 / 7
         else:
             res[i] = res[i] / sum_
