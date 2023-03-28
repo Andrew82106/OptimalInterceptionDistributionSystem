@@ -132,7 +132,6 @@ def GenerateTheMap():
     """
     生成地图
 
-    :param type_: 1 in type，生成路径；2 in type，生成Hex Grid；3 in type：生成OneRoute；4 in type：生成警力点；5 in type：生成规划的路径
     :return: 返回添加好元素的BMap对象
     """
     model = MarkovModel.LoadModel()
@@ -143,7 +142,7 @@ def GenerateTheMap():
     sorted_keys = sorted(predictRES, key=predictRES.get, reverse=False)
     # xx = calcDistance.hex_center(h3.h3_to_geo_boundary(sorted_keys[1]))
     res = GeneratePyeCharts.GenerateBasicMap(
-        center=[DTset[0][-1][0]-0.05, DTset[0][-1][1]+0.05]
+        center=[DTset[0][-1][0] - 0.05, DTset[0][-1][1] + 0.05]
     )
 
     res = AddRouteToMap(res, DTset, width=1)
@@ -164,12 +163,16 @@ def GenerateTheMap():
     res = AddPointToMap(res, policeForces)
     # 显示附近3km范围内的Police POI，并且给每个POI随机分配可调动警力
 
+    choosed_forces = {}
     danger_zones = sorted_keys[-3:]
     for i in danger_zones:
         center_of_zone = calcDistance.hex_center(h3.h3_to_geo_boundary(i))
         minn_dis = -1
         policeforces = -1
         for j in policeForces:
+            station_name = j['name']
+            if station_name not in choosed_forces:
+                choosed_forces[station_name] = {"choosed": 0}
             dis = calcDistance.calcDisBetween(j['location']['lat'], j['location']['lng'], center_of_zone[0],
                                               center_of_zone[1])
             if minn_dis == -1:
@@ -180,9 +183,9 @@ def GenerateTheMap():
                 policeforces = j
         if policeforces == -1:
             raise Exception("没选到police force！")
+        choosed_forces[policeforces['name']]['choosed'] += 1
         res = AddRouteToMap(res, calcDistance.getRoute(policeforces['location']['lat'], policeforces['location']['lng'],
                                                        center_of_zone[0], center_of_zone[1]), color='red')
     # 选取前6个可分配警力最多的POI进行分配
 
-
-    return res
+    return {"Graph": res, "policeForce": GeneratePyeCharts.Generate_Radar_Graph()}

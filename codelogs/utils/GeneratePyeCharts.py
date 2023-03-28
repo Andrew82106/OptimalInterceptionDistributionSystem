@@ -1,6 +1,6 @@
 import asyncio
 from aiohttp import TCPConnector, ClientSession
-from pyecharts.charts import BMap
+from pyecharts.charts import BMap, Radar
 from pyecharts import options as opts
 from pyecharts.globals import BMapType
 
@@ -136,6 +136,38 @@ def GenerateBasicMap(center=None) -> BMap:
     return res
 
 
+def Generate_Radar_Graph(dataLogs=None) -> BMap:
+    if dataLogs is None:
+        dataLogs = {'v1': [[4300, 10000, 28000]], 'v2': [[5000, 14000, 28000]], 'v3': [[4300, 50000, 19000]],
+                    'v4': [[5000, 14000, 21000]]}
+    c = (
+        Radar(init_opts=opts.InitOpts(width="500px", height="250px"))
+        .add_schema(
+            schema=[
+                opts.RadarIndicatorItem(name="销售", max_=6500),
+                opts.RadarIndicatorItem(name="管理", max_=50000),
+                opts.RadarIndicatorItem(name="信息技术", max_=30000),
+            ]
+        )
+        .add("预算分配", dataLogs["v1"])
+        .add("实际开销", dataLogs["v2"])
+        .add("预算分配1", dataLogs['v3'])
+        .add("实际开销1", dataLogs['v4'])
+        .set_series_opts(label_opts=opts.LabelOpts(is_show=False))
+        .set_global_opts(
+            legend_opts=opts.LegendOpts(
+                selected_mode="single",
+                orient="vertical",
+                align="right",
+                pos_right="30%"
+            ),
+        )
+        # .render("radar_selected_mode.html")
+    )
+    return c
+
+
 if __name__ == '__main__':
-    x = SampleData()
+    # x = SampleData()
+    Generate_Radar_Graph()
     print("end")

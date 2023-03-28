@@ -50,12 +50,15 @@ def KFC():
 @app.route('/')
 def index0():
     data = SourceData()
-    c = addFeaturesToMap.GenerateTheMap()
+    res = addFeaturesToMap.GenerateTheMap()
+    c = res["Graph"]
+    Forces = res['policeForce']
     return render_template(
         'index.html',
         form=data,
         title=data.title,
-        MainMap=c.render_embed()
+        MainMap=c.render_embed(),
+        PoliceForces=Forces.render_embed()
     )
 
 

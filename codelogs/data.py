@@ -14,6 +14,14 @@ class SourceDataDemo:
         self.title = '大数据可视化展板通用模板'
         self.counter = {'name': '2018年总收入情况', 'value': 12581189}
         self.counter2 = {'name': '2018年总支出情况', 'value': 3912410}
+        """
+        # 可调动警力水平
+        # 出警点预计到达时间（min）
+        # 各hex块的概率
+        # 目标速度曲线
+        # 目标经过的各hex块的类型统计
+        # 轨迹异常度分析
+        """
         self.echart1_data = {
             'title': '行业分布',
             'data': [
