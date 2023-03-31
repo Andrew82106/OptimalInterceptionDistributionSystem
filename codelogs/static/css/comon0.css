@@ -61,7 +61,8 @@ a:hover{ color:#06c; text-decoration: none!important}
 .boxall:before,.boxfoot:before{border-left: 2px solid #02a6b5;left: 0;}
 .boxall:after,.boxfoot:after{border-right: 2px solid #02a6b5; right: 0;}
 .alltitle{ font-size:.2rem; color:#fff; text-align: center; line-height: .5rem;}
-
+.tablehead{ font-size:.2rem; color:#f0f0f0; text-align: center; line-height: .3rem;}
+.tabletxt{ font-size:.2rem; color:#f0f0f0; text-align: center; line-height: .2rem;}
 .boxfoot{ position:absolute; bottom: 0; width: 100%; left: 0;}
 .boxfoot:before,
 .boxfoot:after{ position:absolute; width: .1rem; height: .1rem;  content: "";border-bottom: 2px solid #02a6b5; bottom: 0;}

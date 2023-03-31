@@ -28,10 +28,7 @@
 
 https://www.microsoft.com/en-us/research/publication/t-drive-trajectory-data-sample/
 
-
 # GPT suggestion
-
-
 
 你的项目“重点人员轨迹预测与控制系统”在实际中具有以下应用方面的亮点：
 
@@ -42,8 +39,6 @@ https://www.microsoft.com/en-us/research/publication/t-drive-trajectory-data-sam
 
 总之，你的项目在公共安全防控、执法监管、城市规划和商业分析等方面都具有较大的应用价值，有望为社会治理和经济发展带来积极的贡献。
 
-
-
 以下是一些实际生活中发生过的案例，这些案例可以支撑项目在安全防控方面的应用：
 
 1. 2017年10月31日，美国纽约曼哈顿发生一起恐怖袭击事件，造成8人死亡。该事件发生后，警方利用视频监控及相关技术对肇事者的行踪进行追踪和预测，最终将其抓捕。如果在事件发生前，类似于你的“重点人员轨迹预测与控制系统”能够及时预测和掌握肇事者的行踪，或许这起事件的后果可以被避免或减轻。
@@ -52,9 +47,7 @@ https://www.microsoft.com/en-us/research/publication/t-drive-trajectory-data-sam
 
 综上所述，类似于你的“重点人员轨迹预测与控制系统”在安全防控方面的应用具有重要的意义和价值。通过对重点人员轨迹的实时监控和预测，可以帮助相关部门及时发现和处置潜在安全隐患，提高社会治安水平。
 
-
 ## 基于GPT suggestion 的update
-
 
 本项目提供如下功能：
 

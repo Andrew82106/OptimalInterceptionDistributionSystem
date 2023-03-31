@@ -22,10 +22,6 @@ $(document).ready(function(){
 	});
 
 
-
-
-
-
 </script>
 <script type="text/javascript" src="{{ url_for('static',filename='js/echarts.min.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static',filename='js/china.js') }}"></script>
@@ -82,23 +78,22 @@ var t = null;
                     <div class="allnav" id="echart1"></div>
                     <div class="boxfoot"></div>
                 </div>
+                <div class="boxall" style="height:3.2rem">
+                    <div class="alltitle">{{form.echart4.title}}</div>
+                    <div class="allnav" id="echart4"></div>
+                    <div class="boxfoot"></div>
+                </div>
                 <div class="boxall" style="height: 3.2rem;width: 6rem">
                 <div class="alltitle">{{form.echart2.title}}</div>
                 <div class="allnav" id="echart2"></div>
                 <div class="boxfoot"></div>
             </div>
-                <div class="boxall" style="height: 3.2rem;width: 6rem">
-                <div style="height:100%; width: 100%;">
-                    <div class="sy" id="fb1"></div>
-                    <div class="sy" id="fb2"></div>
-                    <div class="sy" id="fb3"></div>
-                </div>
-                <div class="boxfoot">
-
-                </div>
+                <!--<div class="boxall" style="height: 3.2rem">
+                <div class="alltitle">{{form.echart5.title}}</div>
+                <div class="allnav" id="echart5"></div>
+                <div class="boxfoot"></div>
+            </div>-->
             </div>
-            </div>
-
         </li>
 
         <li>
@@ -126,19 +121,60 @@ var t = null;
         </li>
 
         <li>
-            <div class="boxall" style="height:3.4rem">
-                <div class="alltitle">{{form.echart4.title}}</div>
-                <div class="allnav" id="echart4"></div>
-                <div class="boxfoot"></div>
-            </div>
-            <div class="boxall" style="height: 3.2rem">
-                <div class="alltitle">{{form.echart5.title}}</div>
-                <div class="allnav" id="echart5"></div>
-                <div class="boxfoot"></div>
+
+            <div class="boxall" style="height: 3.2rem;width: 6rem">
+                    <div style="height:100%; width: 100%;">
+                        <div class="sy" id="fb1"></div>
+                        <div class="sy" id="fb2"></div>
+                        <div class="sy" id="fb3"></div>
+                    </div>
+                    <div class="boxfoot">
+
+                    </div>
             </div>
             <div class="boxall" style="height: 3rem">
-                <div class="alltitle">{{form.echart6.title}}</div>
-                <div class="allnav" id="echart6"></div>
+                <div class="alltitle">就近警力点概要</div>
+                <table style="width: 390px;height: 160px">
+                    <thead>
+                      <tr>
+                        <th class="tablehead">警力点名称</th>
+                        <th class="tablehead">警力点空余度</th>
+                        <th class="tablehead">警力点距中心点距离(km)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="tabletxt">成寿寺派出所</td>
+                        <td class="tabletxt">3.2</td>
+                        <td class="tabletxt">5</td>
+                      </tr>
+                      <tr>
+                        <td class="tabletxt">方庄派出所</td>
+                        <td class="tabletxt">2.1</td>
+                        <td class="tabletxt">4</td>
+                      </tr>
+                      <tr>
+                        <td class="tabletxt">东铁匠营派出所</td>
+                        <td class="tabletxt">5.2</td>
+                        <td class="tabletxt">6.3</td>
+                      </tr>
+                      <tr>
+                        <td class="tabletxt">方城派出所</td>
+                        <td class="tabletxt">4.5</td>
+                        <td class="tabletxt">8.4</td>
+                      </tr>
+                      <tr>
+                        <td class="tabletxt">团河派出所</td>
+                        <td class="tabletxt">10.3</td>
+                        <td class="tabletxt">41.3</td>
+                      </tr>
+                      <tr>
+                        <td class="tabletxt">故宫派出所</td>
+                        <td class="tabletxt">3.2</td>
+                        <td class="tabletxt">50.2</td>
+                      </tr>
+                    </tbody>
+                </table>
                 <div class="boxfoot"></div>
             </div>
         </li>
@@ -379,6 +415,7 @@ $(function echarts_31() {
     },
     legend: {
         top:'70%',
+        //right: 10,
         itemWidth: 10,
         itemHeight: 10,
         data:{{form.echarts3_1.xAxis|safe}},

@@ -188,4 +188,36 @@ def GenerateTheMap():
                                                        center_of_zone[0], center_of_zone[1]), color='red')
     # 选取前6个可分配警力最多的POI进行分配
 
-    return {"Graph": res, "policeForce": GeneratePyeCharts.Generate_Radar_Graph()}
+    # return {"Graph": res, "policeForce": GeneratePyeCharts.Generate_Radar_Graph()}
+    PF = {
+        "pcs1": 10,
+        "pcs2": 9,
+        "pcs3": 8,
+        "pcs4": 7,
+        "pcs5": 6,
+        "pcs6": 5,
+        "pcs7": 4,
+    }
+    Time = {
+        "pcs1": 10,
+        "pcs2": 9,
+        "pcs3": 8,
+        "pcs4": 7,
+        "pcs5": 6,
+        "pcs6": 5,
+        "pcs7": 4,
+    }
+    Speed = [12, 31, 12, 23, 52, 12, 11, 32, 42, 23, 42]
+    Speed1 = [10, 29, 12, 29, 50, 10, 33, 34, 23, 33, 43]
+    hex_per = {
+            'title': 'hex_percentage',
+            'data': [
+                {"name": "hex1", "value": 47},
+                {"name": "hex2", "value": 52},
+                {"name": "hex3", "value": 90},
+                {"name": "hex4", "value": 84},
+                {"name": "hex5", "value": 99},
+            ]
+        }
+
+    return {"Graph": res, "policeForce": PF, "time": Time, 'speed': [Speed, Speed1], 'hex_per': hex_per}

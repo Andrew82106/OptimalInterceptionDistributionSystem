@@ -52,13 +52,23 @@ def index0():
     data = SourceData()
     res = addFeaturesToMap.GenerateTheMap()
     c = res["Graph"]
-    Forces = res['policeForce']
+    data.echart1_data = {"title": "警力空余度",
+                         "data": [{"name": i, "value": res["policeForce"][i]} for i in res["policeForce"]]}
+    data.echart2_data = {"title": "时间消耗",
+                         "data": [{"name": i, "value": res["time"][i]} for i in res["time"]]}
+    data.echart4_data = {"title": "目标速度",
+                         "data": [
+                             {'name': "speed", 'value': [i for i in res["speed"][0]]},
+                             {'name': "speed_avg", 'value': [i for i in res["speed"][1]]}
+                         ],
+                         "xAxis": [str(i) for i in range(len(res['speed'][0]))]}
+    data.echarts3_1_data = res['hex_per']
     return render_template(
         'index.html',
         form=data,
         title=data.title,
         MainMap=c.render_embed(),
-        PoliceForces=Forces.render_embed()
+        # PoliceForces=Forces.render_embed()
     )
 
 
