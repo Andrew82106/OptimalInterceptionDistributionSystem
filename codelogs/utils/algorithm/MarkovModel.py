@@ -24,9 +24,14 @@ class Markov:
 
 
 def LoadModel() -> Markov:
-    with open("/Users/andrewlee/Desktop/Projects/mutiAGVallocator/datalogs/release/taxi_log_2008_by_id/Markov.pkl",
-              'rb') as f:
-        loaded_obj = pickle.load(f)
+    try:
+        with open("/Users/andrewlee/Desktop/Projects/mutiAGVallocator/datalogs/release/taxi_log_2008_by_id/Markov.pkl",
+                  'rb') as f:
+            loaded_obj = pickle.load(f)
+    except:
+        with open("/Project/mutiAGVallocator/datalogs/release/taxi_log_2008_by_id/Markov.pkl",
+                  'rb') as f:
+            loaded_obj = pickle.load(f)
     return loaded_obj
 
 

@@ -39,21 +39,13 @@ def Pull_Gaode_PoiData():
         pickle.dump(res1, f)
 
 
-"""def loadPOI_Data():
-    with open(config.poi_pkl, 'rb') as f:
-        loaded_obj = pickle.load(f)
-    for KL in range(len(loaded_obj) - 1, -1, -1):
-        if KL > len(loaded_obj):
-            break
-        if not (("治安" in loaded_obj[KL]['name']) or ("警" in loaded_obj[KL]['name']) or (
-                "公安" in loaded_obj[KL]['name']) or ("派出" in loaded_obj[KL]['name'])):
-            loaded_obj.pop(KL)
-    return loaded_obj"""
-
-
 def loadPOI_Data():
-    with open(config.poi_pkl, 'rb') as f:
-        loaded_obj = pickle.load(f)
+    try:
+        with open(config.poi_pkl, 'rb') as f:
+            loaded_obj = pickle.load(f)
+    except:
+        with open("/Project/mutiAGVallocator/datalogs/release/taxi_log_2008_by_id/POI.pkl", 'rb') as f:
+            loaded_obj = pickle.load(f)
     res = loaded_obj
     return res
 

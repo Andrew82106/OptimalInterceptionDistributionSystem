@@ -3,6 +3,10 @@ from aiohttp import TCPConnector, ClientSession
 from pyecharts.charts import BMap, Radar
 from pyecharts import options as opts
 from pyecharts.globals import BMapType
+import os
+
+
+NameOfRoot = "mutiAGVallocator"
 
 
 async def get_json_data(url: str) -> dict:
@@ -27,11 +31,14 @@ def GenerateBasicMap(center=None) -> BMap:
 
     :return: 返回一个BMap地图对象
     """
+    Root = str(os.getcwd())[:str(os.getcwd()).find(NameOfRoot)] + NameOfRoot
+    coordinates = os.path.join(Root, "codelogs", "utils", "basicFun", "city_coordinates.json")
     if center is None:
         center = [116.38, 39.9]
     ak = "So5nviFUMbkIU4LvDMMooXdwsQkWQQ3Z"
     res = (
         BMap(init_opts=opts.InitOpts(width="1200px", height="800px"))
+        .add_coordinate_json(coordinates)
         .add_schema(
             baidu_ak=ak,
             center=center,

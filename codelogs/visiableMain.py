@@ -12,8 +12,9 @@ sys.path.append(os.path.join(current_dir, "utils", "algorithm"))
 
 from flask import Flask, render_template
 from jinja2 import Environment, FileSystemLoader
-from jinja2.utils import markupsafe
+# from jinja2.utils import markupsafe
 from pyecharts.globals import CurrentConfig
+# from flask_bootstrap import Bootstrap
 import addFeaturesToMap
 from data import *
 
@@ -22,29 +23,7 @@ from data import *
 CurrentConfig.GLOBAL_ENV = Environment(loader=FileSystemLoader("./templates"))
 
 app = Flask(__name__, static_folder="static", template_folder="templates")
-
-"""@app.route("/oneroute")
-def index():
-    c = addFeaturesToMap.GenerateTheMap_Old([3])
-    return markupsafe.Markup(c.render_embed())
-
-
-@app.route("/routeS")
-def K():
-    c = addFeaturesToMap.GenerateTheMap_Old([1, 2])
-    return markupsafe.Markup(c.render_embed())
-
-
-@app.route("/points")
-def KF():
-    c = addFeaturesToMap.GenerateTheMap_Old([4])
-    return markupsafe.Markup(c.render_embed())
-
-
-@app.route("/jjj")
-def KFC():
-    c = addFeaturesToMap.GenerateTheMap_Old([5])
-    return markupsafe.Markup(c.render_embed())"""
+# bootstrap = Bootstrap(app)
 
 cache = -1
 speed_cache = -1
