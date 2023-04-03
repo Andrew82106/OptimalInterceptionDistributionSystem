@@ -33,6 +33,7 @@ def calcDisBetween(lat1, lon1, lat2, lon2):
     r = 6371  # 地球平均半径，单位为千米
     return c * r
 
+
 def hex_center(vertices):
     """
     计算六边形中心点经纬度

@@ -89,7 +89,7 @@ def MiniDataset(RouteListIn=-1, Save=False):
     return NewRouteList
 
 
-def OneRoute(RouteListIn=MiniDataset(), RouteLength=15):
+def OneRoute(RouteListIn=MiniDataset(), RouteLength=10):
     """
 
     从小数据集中找一条路径，路径点数为10
@@ -140,7 +140,8 @@ def FormatDataset(RoutListIn=-1):
     NewRouteList = []
     for i in RoutListIna:
         if type(RoutListIna) == list:
-            NewRouteList[-1].append([float(i[0]), float(i[1])])
+            # NewRouteList[-1].append([float(i[0]), float(i[1])])
+            NewRouteList.append(i)
         else:
             NewRouteList.append([])
             for j in RoutListIna[i]:

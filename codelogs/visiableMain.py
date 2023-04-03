@@ -46,12 +46,38 @@ def KFC():
     c = addFeaturesToMap.GenerateTheMap_Old([5])
     return markupsafe.Markup(c.render_embed())"""
 
+cache = -1
+speed_cache = -1
+PF_cache = -1
 
-@app.route('/')
+
+@app.route('/analysis')
 def index0():
+    """
+    显示目标路线和追逃路线的函数
+    :return:
+    """
     data = SourceData()
-    res = addFeaturesToMap.GenerateTheMap()
+    res = addFeaturesToMap.GenerateTheMap(DTset=cache, cache=(False if cache == -1 else True))
     c = res["Graph"]
+    if cache:
+        res["speed"] = speed_cache
+        # res['policeForce'] = PF_cache
+    res['detail_info']['data'] = []
+    for kkk in res['policeForce']:
+        try:
+            pcs_name = kkk+"派出所" if kkk[-1] != ")" else kkk.split("(")[0] + "派出所" + kkk.split("(")[1]
+            res['detail_info']['data'].append({"name": pcs_name, "free": res['policeForce'][kkk], "dis": res['dis'][pcs_name]})
+        except:
+            pcs_name = "北京市公安局" + kkk + "派出所" if kkk[-1] != ")" else "北京市公安局" + (kkk.split("(")[0] + "派出所" + kkk.split("(")[1])
+            res['detail_info']['data'].append(
+                {"name": pcs_name, "free": res['policeForce'][kkk], "dis": res['dis'][pcs_name]})
+    res['time'] = res['dis']
+    res1 = {}
+    for i in res['time']:
+        res1[i.replace("派出所", "").replace("北京市公安局", "")] = res['time'][i]
+    res['time'] = res1
+
     data.echart1_data = {"title": "警力空余度",
                          "data": [{"name": i, "value": res["policeForce"][i]} for i in res["policeForce"]]}
     data.echart2_data = {"title": "时间消耗",
@@ -68,7 +94,42 @@ def index0():
         form=data,
         title=data.title,
         MainMap=c.render_embed(),
-        # PoliceForces=Forces.render_embed()
+        table_info=res['detail_info']
+    )
+
+
+@app.route('/')
+def index1():
+    """
+    只显示目标路线和异常度的函数
+    :return:
+    """
+    global cache
+    global speed_cache
+    global PF_cache
+    data = SourceData()
+    res = addFeaturesToMap.GenerateTheMap([1])
+    c = res["Graph"]
+    cache = res["cache"]
+    PF_cache = res['policeForce']
+    speed_cache = res['speed']
+    data.echart1_data = {"title": "警力空余度",
+                         "data": [{"name": i, "value": res["policeForce"][i]} for i in res["policeForce"]]}
+    data.echart2_data = {"title": "时间消耗",
+                         "data": [{"name": i, "value": res["time"][i]} for i in res["time"]]}
+    data.echart4_data = {"title": "目标速度",
+                         "data": [
+                             {'name': "speed", 'value': [i for i in res["speed"][0]]},
+                             {'name': "speed_avg", 'value': [i for i in res["speed"][1]]}
+                         ],
+                         "xAxis": [str(i) for i in range(len(res['speed'][0]))]}
+    data.echarts3_1_data = res['hex_per']
+    return render_template(
+        'index1.html',
+        form=data,
+        title=data.title,
+        MainMap=c.render_embed(),
+        table_info=res['detail_info']
     )
 
 

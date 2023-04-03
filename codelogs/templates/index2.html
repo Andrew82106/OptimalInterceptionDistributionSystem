@@ -100,7 +100,7 @@ var t = null;
             <div class="bar" style="width: 7.9rem">
                 <div class="barbox">
                     <ul class="clearfix">
-                        <li class="pulll_right counter">10</li>
+                        <li class="pulll_right counter">7</li>
                         <li class="pulll_right counter">100%</li>
                     </ul>
                 </div>
@@ -112,7 +112,7 @@ var t = null;
                 </div>
             </div>
             <div class="boxall" style="height: 8rem;width: 7.75rem; margin: 5px">
-                    <div class="alltitle">实时轨迹预警</div>
+                    <div class="alltitle">实时轨迹预测</div>
                         <div style="width:7.4rem;height:7.2rem;overflow:hidden;">
                             {{ MainMap|safe }}
                         </div>
@@ -153,19 +153,10 @@ var t = null;
                 <div class="boxfoot"></div>
             </div>
             <div class="boxall" style="height: 3.2rem;">
-                <div class="alltitle">功能菜单</div>
-                <br>
-                <br>
-                <a href="analysis" role="button" class="button1">轨迹预警</a>
-                <span style="color:#fff3cd;font-family: 微软雅黑,fangsong;font-size: medium">对异常轨迹进行预警</span>
-                <br>
-                <br>
-                <br>
-                <br>
-                <a href="\" role="button" class="button1">轨迹显示</a>
-                <span style="color:#fff3cd;font-family: 微软雅黑,fangsong;font-size: medium">载入新的单条轨迹</span>
-                <br>
-                <div class="boxfoot"></div>
+
+                    <div class="boxfoot">
+
+                    </div>
             </div>
         </li>
     </ul>
@@ -426,7 +417,7 @@ $(function echarts_31() {
             type:'pie',
 			center: ['50%', '42%'],
             radius: ['40%', '60%'],
-            color: ['#fc0000', '#fc7c00', '#fcb400', '#fcda00', '#deed00', '#c0ff00', '#00ff46'],
+                  color: ['#065aab', '#066eab', '#0682ab', '#0696ab', '#06a0ab','#06b4ab','#06c8ab','#06dcab','#06f0ab'],
             label: {show:false},
 			labelLine: {show:false},
             data:{{form.echarts3_1.data|safe}}
