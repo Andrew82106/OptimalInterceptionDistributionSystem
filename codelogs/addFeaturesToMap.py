@@ -118,8 +118,8 @@ def GenerateTheMap(type_=None, DTset=None, cache=False, Speed=None, Speed1=None)
         Speed = []
         Speed1 = []
         for i in range(10):
-            Speed.append(random.randint(40, 90))
-            Speed1.append(Speed[-1] + random.randint(-30, 30))
+            Speed1.append(random.randint(20, 60))
+            Speed.append(Speed1[-1] + random.randint(-5, 50))
     hex_per = {
         'title': '去向概率',
         'data': [
