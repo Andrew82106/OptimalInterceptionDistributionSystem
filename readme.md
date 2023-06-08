@@ -54,9 +54,7 @@ https://www.microsoft.com/en-us/research/publication/t-drive-trajectory-data-sam
 - 对于输入轨迹，计算轨迹异常度
 - 对于确认异常的轨迹，在预测的基础上给出拦截方案
 
-
 # Useage
-
 
 打包成docker即可。
 
@@ -64,3 +62,15 @@ https://www.microsoft.com/en-us/research/publication/t-drive-trajectory-data-sam
 sudo docker build -f ./dockerfile -t  devpro:v0 .
 docker run -d -p 9990:3690 devpro:v0
 ```
+
+# Page Effects
+
+![image.png](assets/image.png?t=1686222461296)
+
+![image.png](assets/image1.png)
+
+# sui sui 念
+
+~~这玩意拿到某次科研比赛上能水到4000块也挺不容易的😄~~
+
+数据是开源数据，没什么需要保密的，所以没什么压力
